@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAuth } from 'firebase/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import './Dashboard.css';
 import heroImage from './Hero.png';
 
 const Dashboard = () => {
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      setUserName(user.displayName || 'User');
+    }
+  }, []);
+
   return (
     <div className="container-fluid min-vh-100 d-flex flex-column justify-content-center align-items-center bg-dark text-white">
       <div className="row w-100">
@@ -19,7 +30,7 @@ const Dashboard = () => {
 
         {/* Right Side - Message */}
         <div className="col-lg-6 d-flex flex-column justify-content-center align-items-start p-5">
-          <h2 className="mb-4">Welcome to Your Dashboard</h2>
+          <h2 className="mb-4">Welcome, {userName}!</h2>
           <p>
             You have successfully signed in. From here, you can access all the essential features
             of your workspace. Manage your projects, track your progress, and collaborate seamlessly
