@@ -1,6 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './SignIn.css'; // Reusing same styling
 import heroImage from './Hero.png';
 import { Link } from 'react-router-dom';
 

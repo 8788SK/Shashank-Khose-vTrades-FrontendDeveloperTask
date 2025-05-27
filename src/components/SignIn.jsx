@@ -21,10 +21,8 @@ const SignIn = () => {
     }
   };
 
-  // Prevent page reload on form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Optional: add email/password login logic if needed
     console.log("Email/password login not implemented.");
   };
 

@@ -3,13 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignIn.css';
 import heroImage from './Hero.png';
 import { FaClock } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(30);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const email = location.state?.email || localStorage.getItem('recoveryEmail') || 'your email address';
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,7 +49,7 @@ const OTPVerification = () => {
             <h2 className="text-start">Enter OTP</h2>
             <p className="mb-4 text-start">
               Enter the OTP that we have sent you on your email address <br />
-              <span className="text-muted">(Email entered on the previous screen)</span>
+              <span className="text-white">{email}</span>
             </p>
 
             {/* OTP Inputs */}
@@ -65,35 +67,35 @@ const OTPVerification = () => {
               ))}
             </div>
 
-            {/* Timer and Change Email */}
+            {/* Change Email */}
             <div className="d-flex justify-content-between align-items-center mb-4">
-  <button
-    className="btn btn-link p-0"
-    style={{ color: '#8854C0', textDecoration: 'none' }}
-    onClick={() => navigate('/forgot-password')} // <-- added this
-  >
-    Change Email Address
-  </button>
-  <div className="d-flex align-items-center text-muted">
-    <FaClock className="me-2" />
-    <span>{timer}s</span>
-  </div>
-</div>
+              <button
+                className="btn btn-link p-0"
+                style={{ color: '#8854C0', textDecoration: 'none' }}
+                onClick={() => navigate('/forgot-password')}
+              >
+                Change Email Address
+              </button>
+            </div>
 
             {/* Continue Button */}
-            <button className="btn w-100" style={{ backgroundColor: '#8854C0', color: 'white' }}>
+            <button
+              className="btn w-100"
+              style={{ backgroundColor: '#8854C0', color: 'white' }}
+              onClick={() => navigate('/new-password')}
+            >
               Continue
             </button>
-            <button
-                className="btn btn-link p-0 mt-3"
-                style={{ color: '#8854C0', textDecoration: 'none' }}
-              >
-                Resend OTP
-              </button>
+
+            {/* Timer placed below the button */}
+            <div className="d-flex justify-content-start align-items-center text-white mt-3">
+              <FaClock className="me-2" />
+              <span>{timer > 0 ? `${timer}s` : 'OTP expired'}</span>
+            </div>
+
             <p className="text-center mt-4">
               Already have an account? <Link to="/" style={{ color: "#8854C0" }}>Sign In</Link>
             </p>
-            
           </div>
         </div>
       </div>

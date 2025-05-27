@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './SignIn.css'; // Use same styling for consistency
+import './SignIn.css';
 import heroImage from './Hero.png';
-import envp from './Envelope.png'
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-
+import envp from './Envelope.png';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowPopup(true);
+
+   
+    localStorage.setItem('recoveryEmail', email);
   };
-  const navigate = useNavigate();
+
+  const handleOkayClick = () => {
+    navigate('/otp', { state: { email } }); 
+  };
 
   return (
     <div className="container-fluid min-vh-100 d-flex flex-column justify-content-center align-items-center position-relative">
@@ -23,7 +29,7 @@ const ForgotPassword = () => {
         <div className="col-lg-6 col-md-6 d-none d-md-flex text-light flex-column justify-content-center p-5" style={{ height: '100%' }}>
           <img
             src={heroImage}
-            alt="image not found"
+            alt="Hero"
             className="img-fluid w-100 h-100 object-fit-contain"
             style={{ maxHeight: '95vh', objectFit: 'contain' }}
           />
@@ -43,6 +49,8 @@ const ForgotPassword = () => {
                   className="form-control bg-dark text-white border-white custom-input"
                   id="email"
                   placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -53,67 +61,51 @@ const ForgotPassword = () => {
                 </button>
               </div>
             </form>
-             <p className="text-center mt-4">
-                Back to <Link to="/" style={{ color: "#8854C0" }}>Sign In</Link>
+
+            <p className="text-center mt-4">
+              Back to <Link to="/" style={{ color: "#8854C0" }}>Sign In</Link>
             </p>
           </div>
         </div>
       </div>
 
       {/* Themed Popup */}
-{showPopup && (
-  <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
-    <div
-      className="bg-dark text-white p-4 rounded shadow"
-      style={{ maxWidth: '400px', width: '90%' }}
-    >
-      <div className="text-center">
-        <div className="d-flex justify-content-center mb-3">
-          <img
-            src={envp}
-            alt="Envelope"
-            style={{
-              width: '100px',
-              height: '100px',
-              objectFit: 'contain'
-            }}
-          />
+      {showPopup && (
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75">
+          <div className="bg-dark text-white p-4 rounded shadow" style={{ maxWidth: '400px', width: '90%' }}>
+            <div className="text-center">
+              <div className="d-flex justify-content-center mb-3">
+                <img
+                  src={envp}
+                  alt="Envelope"
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
+              <h5 className="mb-3" style={{ color: '#8854C0' }}>Link Sent Successfully!</h5>
+              <p className="mb-4">Check your inbox! We’ve sent you an email with instructions to reset your password.</p>
+            </div>
+            <div className="text-end">
+              <button
+                className="btn"
+                style={{
+                  backgroundColor: '#8854C0',
+                  color: 'white',
+                  borderRadius: '5px',
+                }}
+                onClick={handleOkayClick}
+              >
+                Okay
+              </button>
+            </div>
+          </div>
         </div>
-        <h5 className="mb-3" style={{ color: '#8854C0' }}>Link Sent Successfully!</h5>
-        <p className="mb-4">Check your inbox! We’ve sent you an email with instructions to reset your password.</p>
-      </div>
-      <div className="text-end">
-        {/* <button
-          className="btn"
-          style={{
-            backgroundColor: '#8854C0',
-            color: 'white',
-            padding: '6px 18px',
-            borderRadius: '5px',
-          }}
-          onClick={() => setShowPopup(false)}
-        >
-          Okay
-        </button> */}
-        <button
-            className="btn"
-            style={{
-            backgroundColor: '#8854C0',
-            color: 'white',
-            borderRadius: '5px',
-        }}
-        onClick={() => navigate('/otp')}
-        >
-  Okay
-</button>
-
-      </div>
-    </div>
-  </div>
-)}
+      )}
     </div>
   );
 };
 
 export default ForgotPassword;
-
